@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/zamblauskas/scala-csv-parser.svg?branch=master)](https://travis-ci.org/zamblauskas/scala-csv-parser)
+
 About
 ==============================
 CSV parser library for Scala.
