@@ -1,6 +1,6 @@
 package zamblauskas.csv.parser
 
-import scalaz.syntax.functor._
+import zamblauskas.functional._
 
 final case class ColumnBuilder(name: String) {
   def as[T](implicit r: Reads[T]): ColumnReads[T] = new ColumnReads[T] {

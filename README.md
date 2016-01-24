@@ -24,8 +24,8 @@ case class Person(name: String, age: Int, city: Option[String])
 Step 1: define an implicit `ColumnReads[Person]`:
 ```
 implicit val personReads: ColumnReads[Person] = (
-  column("name").as[String]    |@|
-  column("age").as[Int]        |@|
+  column("name").as[String]    and
+  column("age").as[Int]        and
   column("city").asOpt[String]
 )(Person)
 ```

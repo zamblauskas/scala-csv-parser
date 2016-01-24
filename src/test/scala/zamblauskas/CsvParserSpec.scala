@@ -4,15 +4,15 @@ import org.scalatest.{FunSpec, Matchers}
 import zamblauskas.csv.parser.Parser._
 import zamblauskas.csv.parser.ColumnBuilder._
 
-import scalaz.syntax.applicative._
+import zamblauskas.functional._
 
 class CsvParserSpec extends FunSpec with Matchers {
 
   case class Person(name: String, age: Int, city: Option[String])
 
   implicit val personReads = (
-    column("name").as[String] |@|
-    column("age").as[Int] |@|
+    column("name").as[String] and
+    column("age").as[Int] and
     column("city").asOpt[String]
   )(Person)
 

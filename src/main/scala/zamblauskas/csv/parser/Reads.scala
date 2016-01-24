@@ -1,10 +1,9 @@
 package zamblauskas.csv.parser
 
+import zamblauskas.functional._
+
 import scala.reflect.ClassTag
 import scala.util.Try
-import scalaz.Applicative
-import scalaz.syntax.semigroup._
-
 
 trait Reads[T] {
   def read(column: Column): ReadResult[T]
@@ -45,10 +44,10 @@ trait ColumnReads[T] {
 object ColumnReads {
 
   implicit val columnReadsIsApplicative: Applicative[ColumnReads] = new Applicative[ColumnReads] {
-    override def point[A](a: => A): ColumnReads[A] = new ColumnReads[A] {
+    override def unit[A](a: => A): ColumnReads[A] = new ColumnReads[A] {
       override def read(line: Seq[Column]): ReadResult[A] = ReadSuccess(a)
     }
-    override def ap[A, B](fa: => ColumnReads[A])(f: => ColumnReads[(A) => B]): ColumnReads[B] = new ColumnReads[B] {
+    override def apply[A, B](f: => ColumnReads[(A) => B])(fa: => ColumnReads[A]): ColumnReads[B] = new ColumnReads[B] {
       override def read(line: Seq[Column]): ReadResult[B] = (fa.read(line), f.read(line)) match {
         case (ReadSuccess(fav), ReadSuccess(fv)) => ReadSuccess(fv(fav))
         case (f1: ReadFailure, f2: ReadFailure) => f1 |+| f2

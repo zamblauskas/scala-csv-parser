@@ -1,6 +1,7 @@
 package zamblauskas.csv.parser
 
-import scalaz.{Functor, Semigroup}
+import zamblauskas.functional.{Functor, Semigroup}
+
 
 trait ReadResult[+A]
 final case class ReadSuccess[A](value: A) extends ReadResult[A]
@@ -15,7 +16,7 @@ object ReadResult {
   }
 
   implicit val readResultIsFunctor: Functor[ReadResult] = new Functor[ReadResult] {
-    override def map[A, B](fa: ReadResult[A])(f: (A) => B): ReadResult[B] = fa match {
+    override def map[A, B](fa: => ReadResult[A])(f: (A) => B): ReadResult[B] = fa match {
       case ReadSuccess(v) => ReadSuccess(f(v))
       case f: ReadFailure => f
     }
