@@ -8,8 +8,12 @@ trait Applicative[F[_]] extends Functor[F] {
   // derived methods
   def map[A, B](fa: => F[A])(f: A => B): F[B] = apply(unit(f))(fa)
   def map2[A, B, C](fa: => F[A], fb: => F[B])(f: (A, B) => C): F[C] = apply(map(fa)(f.curried))(fb)
-  def map3[A, B, C, D](fa: => F[A], fb: => F[B], fc: => F[C])(f: (A, B, C) => D) =
+  def map3[A, B, C, D](fa: => F[A], fb: => F[B], fc: => F[C])(f: (A, B, C) => D): F[D] =
     apply(map2(fa, fb)((a:A, b:B) => f.curried (a)(b)))(fc)
+  def map4[A, B, C, D, E](fa: => F[A], fb: => F[B], fc: => F[C], fd: => F[D])(f: (A, B, C, D) => E): F[E] =
+    apply(map3(fa, fb, fc)((a:A, b:B, c:C) => f.curried (a)(b)(c)))(fd)
+  def map5[A, B, C, D, E, G](fa: => F[A], fb: => F[B], fc: => F[C], fd: => F[D], fe: => F[E])(f: (A, B, C, D, E) => G): F[G] =
+    apply(map4(fa, fb, fc, fd)((a:A, b:B, c:C, d:D) => f.curried (a)(b)(c)(d)))(fe)
 }
 
 trait ApplicativeBuilder[M[_], A, B] {
@@ -23,6 +27,22 @@ trait ApplicativeBuilder[M[_], A, B] {
   trait ApplicativeBuilder3[C] {
     val c: M[C]
     def apply[D](f: (A, B, C) => D)(implicit ap: Applicative[M]): M[D] = ap.map3(a, b, c)(f)
+    def and[D](dd: M[D]): ApplicativeBuilder4[D] = new ApplicativeBuilder4[D] {
+      val d = dd
+    }
+
+    trait ApplicativeBuilder4[D] {
+      val d: M[D]
+      def apply[E](f: (A, B, C, D) => E)(implicit ap: Applicative[M]): M[E] = ap.map4(a, b, c, d)(f)
+      def and[E](ee: M[E]): ApplicativeBuilder5[E] = new ApplicativeBuilder5[E] {
+        val e = ee
+      }
+
+      trait ApplicativeBuilder5[E] {
+        val e: M[E]
+        def apply[G](f: (A, B, C, D, E) => G)(implicit ap: Applicative[M]): M[G] = ap.map5(a, b, c, d, e)(f)
+      }
+    }
   }
 }
 
@@ -32,7 +52,6 @@ class ApplicativeOps[F[_], A](val self: F[A])(implicit val F: Applicative[F]) {
     val a = self
     val b = fb
   }
-
 }
 
 trait ToApplicativeOps {
