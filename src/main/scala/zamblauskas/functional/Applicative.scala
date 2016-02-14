@@ -14,6 +14,8 @@ trait Applicative[F[_]] extends Functor[F] {
     apply(map3(fa, fb, fc)((a:A, b:B, c:C) => f.curried (a)(b)(c)))(fd)
   def map5[A, B, C, D, E, G](fa: => F[A], fb: => F[B], fc: => F[C], fd: => F[D], fe: => F[E])(f: (A, B, C, D, E) => G): F[G] =
     apply(map4(fa, fb, fc, fd)((a:A, b:B, c:C, d:D) => f.curried (a)(b)(c)(d)))(fe)
+  def map6[A, B, C, D, E, G, H](fa: => F[A], fb: => F[B], fc: => F[C], fd: => F[D], fe: => F[E], fg: => F[G])(f: (A, B, C, D, E, G) => H): F[H] =
+    apply(map5(fa, fb, fc, fd, fe)((a:A, b:B, c:C, d:D, e: E) => f.curried (a)(b)(c)(d)(e)))(fg)
 }
 
 trait ApplicativeBuilder[M[_], A, B] {
@@ -41,6 +43,14 @@ trait ApplicativeBuilder[M[_], A, B] {
       trait ApplicativeBuilder5[E] {
         val e: M[E]
         def apply[G](f: (A, B, C, D, E) => G)(implicit ap: Applicative[M]): M[G] = ap.map5(a, b, c, d, e)(f)
+        def and[G](gg: M[G]): ApplicativeBuilder6[G] = new ApplicativeBuilder6[G] {
+          val g = gg
+        }
+
+        trait ApplicativeBuilder6[G] {
+          val g: M[G]
+          def apply[H](f: (A, B, C, D, E, G) => H)(implicit ap: Applicative[M]): M[H] = ap.map6(a, b, c, d, e, g)(f)
+        }
       }
     }
   }
