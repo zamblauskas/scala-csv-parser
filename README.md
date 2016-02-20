@@ -36,3 +36,14 @@ val result: Either[Failure, Seq[Person]] = parse(csv)
 println(result)
 //Right(List(Person(Emily,33,Some(London)), Person(Thomas,25,None)))
 ```
+
+SBT dependency
+==============================
+
+Add to your `build.sbt`:
+
+```
+resolvers += Resolver.bintrayRepo("zamblauskas", "maven")
+
+libraryDependencies += "zamblauskas" %% "scala-csv-parser" % "0.7.0"
+```
