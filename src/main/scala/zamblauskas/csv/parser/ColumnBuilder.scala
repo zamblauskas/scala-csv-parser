@@ -19,7 +19,3 @@ final case class ColumnBuilder(name: String) {
     }
   }
 }
-
-object ColumnBuilder {
-  def column(name: String): ColumnBuilder = ColumnBuilder(name)
-}

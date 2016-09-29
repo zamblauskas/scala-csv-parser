@@ -2,8 +2,7 @@ package zamblauskas
 
 import org.scalatest.{FunSpec, Matchers}
 import zamblauskas.csv.parser.Parser._
-import zamblauskas.csv.parser.ColumnBuilder._
-
+import zamblauskas.csv.parser._
 import zamblauskas.functional._
 
 class CsvParserSpec extends FunSpec with Matchers {

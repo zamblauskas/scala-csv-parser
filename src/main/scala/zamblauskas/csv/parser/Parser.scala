@@ -3,6 +3,7 @@ package zamblauskas.csv.parser
 import java.io.StringReader
 
 import au.com.bytecode.opencsv.CSVReader
+import zamblauskas.csv.parser.util.CsvReaderUtil._
 
 import scala.annotation.tailrec
 
