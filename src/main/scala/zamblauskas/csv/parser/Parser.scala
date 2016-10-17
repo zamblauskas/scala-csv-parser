@@ -11,9 +11,12 @@ object Parser {
 
   final case class Failure(lineNum: Int, line: String, message: String)
 
-  def parse[T](str: String)(implicit cr: ColumnReads[T]): Either[Failure, Seq[T]] = parse(str, separator = ',')
+  /**
+    * Parse using `,` as the default separator.
+    */
+  def parse[T](str: String)(implicit cr: ColumnReads[T]): Either[Failure, Seq[T]] = parseWithSeparator(str, ',')
 
-  def parse[T](str: String, separator: Char)(implicit cr: ColumnReads[T]): Either[Failure, Seq[T]] = {
+  def parseWithSeparator[T](str: String, separator: Char)(implicit cr: ColumnReads[T]): Either[Failure, Seq[T]] = {
     val csv = new CSVReader(new StringReader(str), separator)
     val header = csv.next.getOrElse(Array.empty)
 
