@@ -4,7 +4,7 @@ name := "scala-csv-parser"
 
 scalaVersion := "2.11.8"
 
-version := "0.7.1"
+version := "0.8.0"
 
 libraryDependencies ++= Seq(
   "net.sf.opencsv" %  "opencsv"       % "2.3",

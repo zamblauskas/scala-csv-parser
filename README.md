@@ -56,5 +56,5 @@ Add to your `build.sbt`:
 ``` scala
 resolvers += Resolver.bintrayRepo("zamblauskas", "maven")
 
-libraryDependencies += "zamblauskas" %% "scala-csv-parser" % "0.7.0"
+libraryDependencies += "zamblauskas" %% "scala-csv-parser" % "0.8.0"
 ```
