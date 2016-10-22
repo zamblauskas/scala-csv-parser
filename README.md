@@ -3,38 +3,49 @@
 About
 ==============================
 CSV parser library for Scala.
-Best suited to convert a string representation into a collection of objects.
+Easiest way to convert CSV string representation into a case class.
 
 Usage
 ==============================
 
-Input CSV string:
 ``` scala
-val csv = """
-|name,age,height,city
-|Emily,33,195,London
-|Thomas,25,,
-""".stripMargin
-```
-Case class we want to convert to:
-``` scala
-case class Person(name: String, age: Int, city: Option[String])
+  import zamblauskas.csv.parser._
+
+  val csv = """
+    |name,age,height,city
+    |Emily,33,169,London
+    |Thomas,25,,
+  """.stripMargin
+
+  case class Person(name: String, age: Int, city: Option[String])
+
+  val result = Parser.parse[Person](csv)
+
+  println(result)
 ```
 
-Step 1: define an implicit `ColumnReads[Person]`:
+This will print:
+```
+Right(List(Person(Emily,33,Some(London)), Person(Thomas,25,None)))
+```
+
+ColumnReads[T]
+==============================
+
+Example above used a macro generated `ColumnReads[Person]`.
+You can define one manually if the generated one does not fit your use case
+(e.g. column names differ from case class parameter names).
+
+This is identical to what macro generates for a `Person` case class:
 ``` scala
+import zamblauskas.functional._
+
 implicit val personReads: ColumnReads[Person] = (
   column("name").as[String]    and
   column("age").as[Int]        and
   column("city").asOpt[String]
 )(Person)
-```
 
-Step 2: get the result:
-``` scala
-val result: Either[Failure, Seq[Person]] = parse(csv)
-println(result)
-//Right(List(Person(Emily,33,Some(London)), Person(Thomas,25,None)))
 ```
 
 SBT dependency
