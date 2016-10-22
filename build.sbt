@@ -2,14 +2,14 @@ organization := "zamblauskas"
 
 name := "scala-csv-parser"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 version := "0.7.1"
 
 libraryDependencies ++= Seq(
   "net.sf.opencsv" %  "opencsv"       % "2.3",
   "org.scala-lang" %  "scala-reflect" % scalaVersion.value,
-  "org.scalatest"  %% "scalatest"     % "2.2.5"              % "test"
+  "org.scalatest"  %% "scalatest"     % "3.0.0"              % "test"
 )
 
 scalacOptions ++= Seq(
