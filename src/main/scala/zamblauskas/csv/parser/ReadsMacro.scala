@@ -46,14 +46,22 @@ object ReadsMacro {
     if(companionOfT == NoSymbol)
       abort(s"$fullNameOfT must have a companion object.")
 
+    val functionalPkg = q"import zamblauskas.functional._"
+
     val columnBuilderOfT = fieldsColumnBuilders match {
       case Nil =>
         abort(s"$fullNameOfT constructor must have at least one parameter.")
       case x :: Nil =>
-        q"$x.map($companionOfT)"
+        q"""
+          $functionalPkg
+          $x.map($companionOfT)
+          """
       case _ =>
         val applicativeBuilder = fieldsColumnBuilders.reduceLeft { (acc, r) =>
-          q"$acc.and($r)"
+          q"""
+            $functionalPkg
+            $acc.and($r)
+            """
         }
         q"$applicativeBuilder.apply($companionOfT)"
     }
