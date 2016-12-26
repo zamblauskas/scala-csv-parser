@@ -26,6 +26,104 @@ class CsvParserSpec extends FunSpec with Matchers {
     test(personReads)
   }
 
+  describe("alternative column names") {
+    implicit val personReads: ColumnReads[Person] = (
+      column("n").as[String] or column("name").as[String] and
+      (column("a").as[Int] or column("age").as[Int]) and
+      // XXX: support for alternative optional columns could be improved,
+      //      if both columns 'c' and 'city' are alternative and optional,
+      //      we need to handle `None` for the first one as invalid value so it would
+      //      try to pick second.
+      (column("c").as[String].map(Some(_)) or column("city").asOpt[String])
+    )(Person)
+
+    it("read with short column names") {
+      parse(
+        """
+          |n,a,c
+          |john,21,madrid
+        """.stripMargin
+      ) shouldBe Right(Seq(Person("john", 21, Some("madrid"))))
+    }
+
+    it("read with long column names") {
+      parse(
+        """
+          |name,age,city
+          |john,21,madrid
+        """.stripMargin
+      ) shouldBe Right(Seq(Person("john", 21, Some("madrid"))))
+    }
+
+    it("none of the columns exist") {
+      val result = parse(
+        """
+          |no-name,no-age,no-city
+          |john,21,madrid
+        """.stripMargin
+      )
+
+      result shouldBe a[Left[_, _]]
+
+      val failure = result.left.get
+      failure.lineNum shouldBe 0
+      failure.line shouldBe "john,21,madrid"
+      failure.message shouldBe
+        "Column 'a' does not exist., " +
+        "Column 'age' does not exist., " +
+        "Column 'n' does not exist., " +
+        "Column 'name' does not exist."
+        // XXX: 'city' field is optional, therefore should not be in the error message.
+    }
+  }
+
+  describe("alternative reads") {
+    val defaultReads: ColumnReads[Person] = implicitly[ColumnReads[Person]]
+    val shortNameReads: ColumnReads[Person] = (
+      column("n").as[String] and
+      column("a").as[Int] and
+      column("c").asOpt[String]
+    )(Person)
+
+    implicit val personReads = defaultReads or shortNameReads
+
+    it("read with short column names") {
+      parse(
+        """
+          |n,a,c
+          |john,21,madrid
+        """.stripMargin
+      ) shouldBe Right(Seq(Person("john", 21, Some("madrid"))))
+    }
+
+    it("read with default column names") {
+      parse(
+        """
+          |name,age,city
+          |john,21,madrid
+        """.stripMargin
+      ) shouldBe Right(Seq(Person("john", 21, Some("madrid"))))
+    }
+
+    it("fail on mixed column names") {
+      val result = parse(
+        """
+          |name,a,city
+          |john,21,madrid
+        """.stripMargin
+      )
+
+      result shouldBe a[Left[_, _]]
+
+      val failure = result.left.get
+      failure.lineNum shouldBe 0
+      failure.line shouldBe "john,21,madrid"
+      failure.message shouldBe
+        "Column 'age' does not exist., " +
+        "Column 'n' does not exist."
+    }
+  }
+
   def test(implicit cr: ColumnReads[Person]): Unit = {
     describe("success parsing") {
       it("empty string") {

@@ -4,3 +4,4 @@ package object functional
   extends  ToApplicativeOps
   with  ToFunctorOps
   with ToSemigroupOps
+  with ToAlternativeOps

@@ -56,4 +56,16 @@ object ColumnReads {
       }
     }
   }
+
+  implicit val columnReadsIsAlternative: Alternative[ColumnReads] = new Alternative[ColumnReads] {
+    override def or[A, B >: A](alt1: ColumnReads[A], alt2: ColumnReads[B]): ColumnReads[B] = new ColumnReads[B] {
+      override def read(line: Seq[Column]): ReadResult[B] = alt1.read(line) match {
+        case s1 @ ReadSuccess(_) => s1
+        case f1 @ ReadFailure(_) => alt2.read(line) match {
+          case s2 @ ReadSuccess(_) => s2
+          case f2 @ ReadFailure(_) => f1 |+| f2
+        }
+      }
+    }
+  }
 }
