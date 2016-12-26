@@ -9,24 +9,21 @@ Usage
 ==============================
 
 ``` scala
-  import zamblauskas.csv.parser._
+import zamblauskas.csv.parser._
 
-  val csv = """
-    |name,age,height,city
-    |Emily,33,169,London
-    |Thomas,25,,
-  """.stripMargin
+case class Person(name: String, age: Int, city: Option[String])
 
-  case class Person(name: String, age: Int, city: Option[String])
+val csv = """
+            |name,age,height,city
+            |Emily,33,169,London
+            |Thomas,25,,
+          """.stripMargin
 
-  val result = Parser.parse[Person](csv)
-
-  println(result)
+Parser.parse[Person](csv)
 ```
 
-This will print:
 ```
-Right(List(Person(Emily,33,Some(London)), Person(Thomas,25,None)))
+res0: Either[zamblauskas.csv.parser.Parser.Failure,Seq[Person]] = Right(List(Person(Emily,33,Some(London)), Person(Thomas,25,None)))
 ```
 
 ColumnReads[T]
@@ -45,8 +42,88 @@ implicit val personReads: ColumnReads[Person] = (
   column("age").as[Int]        and
   column("city").asOpt[String]
 )(Person)
+```
+
+Alternative column names
+==============================
+
+If columns have two or more alternative names (e.g. in different languages),
+you can use an `or` combinator.
+
+``` scala
+import zamblauskas.csv.parser._
+import zamblauskas.functional._
+import Parser.parse
+
+case class Person(age: Int, city: String)
+
+implicit val personReads: ColumnReads[Person] = (
+  (column("age").as[Int] or column("alter").as[Int]) and
+  (column("city").as[String] or column("stadt").as[String])
+)(Person)
+
+val englishCsv =
+  """
+    |age,city
+    |33,London
+  """.stripMargin
+
+val germanCsv =
+  """
+    |alter,stadt
+    |33,London
+  """.stripMargin
+
+parse[Person](englishCsv) == parse[Person](germanCsv)
+```
 
 ```
+res0: Boolean = true
+```
+
+Alternative reads
+==============================
+
+Example above can be rewritten to use alternative `ColumnReads` instead of alternative column names on single `ColumnReads`.
+
+``` scala
+import zamblauskas.csv.parser._
+import zamblauskas.functional._
+import Parser.parse
+
+case class Person(age: Int, city: String)
+
+val englishPersonReads: ColumnReads[Person] = (
+  column("age").as[Int] and
+  column("city").as[String]
+)(Person)
+
+val germanPersonReads: ColumnReads[Person] = (
+  column("alter").as[Int] and
+  column("stadt").as[String]
+)(Person)
+
+implicit val personReads = englishPersonReads or germanPersonReads
+
+val englishCsv =
+  """
+    |age,city
+    |33,London
+  """.stripMargin
+
+val germanCsv =
+  """
+    |alter,stadt
+    |33,London
+  """.stripMargin
+
+parse[Person](englishCsv) == parse[Person](germanCsv)
+```
+
+```
+res0: Boolean = true
+```
+
 
 SBT dependency
 ==============================
