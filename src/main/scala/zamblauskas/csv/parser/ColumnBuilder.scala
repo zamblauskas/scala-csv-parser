@@ -4,6 +4,7 @@ import zamblauskas.functional._
 
 final case class ColumnBuilder(name: String) {
   def as[T](implicit r: Reads[T]): ColumnReads[T] = new ColumnReads[T] {
+    override def isHeaderValid(names: Seq[String]): Boolean = names.contains(name)
     override def read(line: Seq[Column]): ReadResult[T] = {
       line.find(_.name == name)
         .map(r.read)
@@ -12,6 +13,7 @@ final case class ColumnBuilder(name: String) {
   }
 
   def asOpt[T](implicit r: Reads[T]): ColumnReads[Option[T]] = new ColumnReads[Option[T]] {
+    override def isHeaderValid(names: Seq[String]): Boolean = true
     override def read(line: Seq[Column]): ReadResult[Option[T]] = {
       line.find(column => column.name == name && column.value.nonEmpty)
         .map(r.read(_).map(Some(_)))
