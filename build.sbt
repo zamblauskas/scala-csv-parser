@@ -28,3 +28,5 @@ scalacOptions ++= Seq(
 wartremoverErrors in (Compile, compile) ++= Warts.allBut(Wart.ImplicitConversion)
 // Too much false-positives in the macro code - better just disable it
 wartremoverExcluded += baseDirectory.value / "src/main/scala/zamblauskas/csv/parser/ReadsMacro.scala"
+
+licenses := ("MIT", url("https://opensource.org/licenses/MIT")) :: Nil
