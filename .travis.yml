@@ -3,8 +3,13 @@ scala:
 - 2.11.7
 jdk:
 - oraclejdk8
-after_success:
-  - '[ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ] && /bin/bash "$TRAVIS_BUILD_DIR/.travis.credentials.sh" && sbt publish'
+deploy:
+  provider: script
+  script:
+    - /bin/bash "$TRAVIS_BUILD_DIR/.travis.credentials.sh" && sbt publish
+  on:
+    tags: true
+    repo: zamblauskas/scala-csv-parser
 env:
   global:
   - secure: TCFeIck1jJ0ZN4z2jw1v3Ie5EXPiBbRH+Wg85Uhq2nYTHYMvoWwBekCu7Qn/xtPdqpY1/ZkGUisZuzvPGdpMB+XZGBlLYd612dBeQv3Gt8yd7ME09sDsPPogjciQ7pauFza/spKVXnnF1NopeRVkEIq6f6pbkOtCWVg07kJduhGQjI9TqH45Igl2ySrRvca5FtgPqVf606o/BJTql8SDLyP//CJmtF0J1aJbkH1zZSFm1hf4mtYN7wCS+EEpP49+G3mYHDdPzEcn6LDScl35/SdnbTrS+BUvbDT2AQ2ZSahH+itaAgjdgq+Sdp0n5+tUQbkndF+4ZpRvWPFU6EkaWVZSEglIeqEIsA1HUimAbmzrxv2hfcYTN5KflmkyV9BQeeittCpr2V3h4Lvc/fKNyEX1r6oP1YDdaaiuDUgNpEg1CtX9i32PselSypZWVM+ZEwrYUwwEnpVRDke2gCHkWX9Fwo1kz2GakFfUeKxOuGjgOnm0YYQ8kIxXXhKk/MdJHGN+tUxJcJin2iZP5QcRMJSsrp2tQbeQJfCO4ENU5fCZsLEOz1m340GO71Zwgabnl7JZfPb+9xNWh7nhsHRXM2CV8i8SJdO/ClENlZpSWqtLYClgpLKwYhLRAMaOM1qPMwNFZN0hn3XbDUG2ZeUOk5lLDBLTcViseZ6yvC5Avn0=
