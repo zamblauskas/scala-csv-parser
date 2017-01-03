@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/zamblauskas/scala-csv-parser.svg?branch=master)](https://travis-ci.org/zamblauskas/scala-csv-parser)
+[![Download](https://api.bintray.com/packages/zamblauskas/maven/scala-csv-parser/images/download.svg) ](https://bintray.com/zamblauskas/maven/scala-csv-parser/_latestVersion)
 
 About
 ==============================
@@ -33,7 +34,7 @@ Example above used a macro generated `ColumnReads[Person]`.
 You can define one manually if the generated one does not fit your use case
 (e.g. column names differ from case class parameter names).
 
-This is identical to what macro generates for a `Person` case class:
+This is identical to what the macro generates for a `Person` case class:
 ``` scala
 import zamblauskas.functional._
 
@@ -128,10 +129,11 @@ res0: Boolean = true
 SBT dependency
 ==============================
 
-Add to your `build.sbt`:
+Package is available at [Bintray](https://bintray.com/zamblauskas/maven/scala-csv-parser).
+Check for the latest version and add to your `build.sbt`:
 
 ``` scala
 resolvers += Resolver.bintrayRepo("zamblauskas", "maven")
 
-libraryDependencies += "zamblauskas" %% "scala-csv-parser" % "0.8.0"
+libraryDependencies += "zamblauskas" %% "scala-csv-parser" % "<latest_version>"
 ```
