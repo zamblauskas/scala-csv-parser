@@ -1,0 +1,37 @@
+package zamblauskas.functional
+
+trait Applicative[F[_]] extends Functor[F] {
+  def unit[A](a: => A): F[A]
+  def apply[A, B](fab: => F[A => B])(fa: => F[A]): F[B]
+
+  // derived methods
+  def map[A, B](fa: => F[A])(f: A => B): F[B] = apply(unit(f))(fa)
+
+  def map1[A, B](fa: => F[A])(f: A => B): F[B] = map(fa)(f)
+
+  [1..21#def map2[[#P1#], P2, R]([#f1: => F[P1]#], f2: => F[P2])(f: ([#P1#], P2) => R): F[R] =
+    apply(map1([#f1#])(([#p1: P1#]) => f.curried [#(p1)# ]))(f2)  #
+  ]
+}
+
+[2..21#trait ApplicativeBuilder1[M[_], [#P1#]] { self =>
+  [#val p1: M[P1]#
+  ]
+
+  def apply[R](f: ([#P1#]) => R)(implicit ap: Applicative[M]): M[R] = ap.map1([#p1#])(f)
+
+  def and[R](r: M[R]): ApplicativeBuilder2[M, [#P1#], R] = new ApplicativeBuilder2[M, [#P1#], R] {
+    [#val p1: M[P1] = self.p1#
+    ]
+    val p2: M[R] = r
+  }
+}#
+]
+
+[22..22#trait ApplicativeBuilder1[M[_], [#P1#]] { self =>
+  [#val p1: M[P1]#
+  ]
+
+  def apply[R](f: ([#P1#]) => R)(implicit ap: Applicative[M]): M[R] = ap.map1([#p1#])(f)
+}#
+]
