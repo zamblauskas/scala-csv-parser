@@ -42,11 +42,8 @@ object ReadsMacro {
       }
     }
 
-    val companionOfT = typeOfT.typeSymbol.companion
-    if(companionOfT == NoSymbol)
-      abort(s"$fullNameOfT must have a companion object.")
-
     val functionalPkg = q"import zamblauskas.functional._"
+    val newTypeOfT = c.parse(s"new $typeOfT(${fields.map(_ => "_").mkString(",")})")
 
     val columnBuilderOfT = fieldsColumnBuilders match {
       case Nil =>
@@ -54,7 +51,7 @@ object ReadsMacro {
       case x :: Nil =>
         q"""
           $functionalPkg
-          $x.map($companionOfT)
+          $x.map($newTypeOfT)
           """
       case _ =>
         val applicativeBuilder = fieldsColumnBuilders.reduceLeft { (acc, r) =>
@@ -63,7 +60,7 @@ object ReadsMacro {
             $acc.and($r)
             """
         }
-        q"$applicativeBuilder.apply($companionOfT)"
+        q"$applicativeBuilder.apply($newTypeOfT)"
     }
 
     c.Expr[ColumnReads[T]](columnBuilderOfT)

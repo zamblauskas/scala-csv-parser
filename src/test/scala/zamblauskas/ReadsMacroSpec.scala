@@ -7,13 +7,9 @@ import zamblauskas.csv.parser._
 
 
 class ReadsMacroSpec extends FunSpec with Matchers {
-
-  case class SingleParam(param: String)
-  case class MultiParam(param1: String, param2: String)
-  case class EmptyParam()
-  class NotACaseClass(param: String)
-
   it("generate reads for single param case class") {
+    case class SingleParam(param: String)
+
     val csv =
       """
         |param
@@ -24,6 +20,8 @@ class ReadsMacroSpec extends FunSpec with Matchers {
   }
 
   it("generate reads for multi param case class") {
+    case class MultiParam(param1: String, param2: String)
+
     val csv =
       """
         |param1,param2
@@ -34,11 +32,8 @@ class ReadsMacroSpec extends FunSpec with Matchers {
   }
 
   it("does not generate reads for empty param case class") {
+    case class EmptyParam()
+
     """parse[EmptyParam]("")""" shouldNot compile
   }
-
-  it("does not generate reads for non case class") {
-    """parse[NotACaseClass]("")""" shouldNot compile
-  }
-
 }
