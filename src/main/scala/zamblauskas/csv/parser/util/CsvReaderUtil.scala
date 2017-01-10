@@ -3,19 +3,21 @@ package zamblauskas.csv.parser.util
 import au.com.bytecode.opencsv.CSVReader
 import ImplicitExtensions._
 
+import scala.annotation.tailrec
+
 object CsvReaderUtil {
 
-  @SuppressWarnings(Array("org.wartremover.warts.Null"))
-  implicit class CSVReaderExtensions(reader: CSVReader) {
+  implicit final class CSVReaderExtensions(val reader: CSVReader) extends AnyVal {
+    @tailrec
     def next: Option[Array[String]] = {
-      val line = reader.readNext
-      if(line === null) None
-      else if(isEmpty(line)) next
-      else Some(line)
+      Option(reader.readNext) match {
+        case Some(line) if isEmpty(line) => next
+        case s @ Some(_) => s
+        case None => None
+      }
     }
 
     private def isEmpty(line: Array[String]): Boolean =
       line.isEmpty || line.length === 1 && line(0).trim === ""
   }
-
 }
