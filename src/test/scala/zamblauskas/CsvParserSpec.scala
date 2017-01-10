@@ -60,11 +60,10 @@ class CsvParserSpec extends FunSpec with Matchers {
                   |no-name,no-age,no-city
                   |john,21,madrid
                 """.stripMargin
+
       val result = parse(csv)
 
-      result shouldBe a[Left[_, _]]
-
-      val failure = result.left.get
+      val failure = expectFailure(result)
       failure.lineNum shouldBe 0
       failure.line shouldBe "john,21,madrid"
       failure.message shouldBe
@@ -118,9 +117,7 @@ class CsvParserSpec extends FunSpec with Matchers {
 
       val result = parse(csv)
 
-      result shouldBe a[Left[_, _]]
-
-      val failure = result.left.get
+      val failure = expectFailure(result)
       failure.lineNum shouldBe 0
       failure.line shouldBe "john,21,madrid"
       failure.message shouldBe
@@ -236,9 +233,8 @@ class CsvParserSpec extends FunSpec with Matchers {
                   """.stripMargin
 
         val result = parse(csv)
-        result shouldBe a[Left[_, _]]
 
-        val failure = result.left.get
+        val failure = expectFailure(result)
         failure.lineNum shouldBe 0
         failure.line shouldBe "john,london"
         failure.message should include("age")
@@ -253,9 +249,8 @@ class CsvParserSpec extends FunSpec with Matchers {
                   """.stripMargin
 
         val result = parse(csv)
-        result shouldBe a[Left[_, _]]
 
-        val failure = result.left.get
+        val failure = expectFailure(result)
         failure.lineNum shouldBe 0
         failure.line shouldBe "john,x,london"
         failure.message should include("age")
@@ -270,9 +265,8 @@ class CsvParserSpec extends FunSpec with Matchers {
                   """.stripMargin
 
         val result = parse(csv)
-        result shouldBe a[Left[_, _]]
 
-        val failure = result.left.get
+        val failure = expectFailure(result)
         failure.lineNum shouldBe 0
         failure.line shouldBe "london"
         failure.message should (include("name") and include("age"))
@@ -288,9 +282,8 @@ class CsvParserSpec extends FunSpec with Matchers {
                   """.stripMargin
 
         val result = parse(csv)
-        result shouldBe a[Left[_, _]]
 
-        val failure = result.left.get
+        val failure = expectFailure(result)
         failure.lineNum shouldBe 1
         failure.line shouldBe "smith"
         failure.message should include("age")
@@ -299,4 +292,7 @@ class CsvParserSpec extends FunSpec with Matchers {
       }
     }
   }
+
+  private def expectFailure[A](result: Either[A, _]): A =
+    result.left.getOrElse(fail(s"Expected failure, but got $result"))
 }
