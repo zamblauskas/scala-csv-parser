@@ -19,7 +19,7 @@ object ReadsMacro {
     }
 
     val fields = typeOfT.decls.collectFirst {
-      case m: MethodSymbol if m.isPrimaryConstructor ⇒ m
+      case m: MethodSymbol if m.isPrimaryConstructor => m
     }.flatMap(_.paramLists.headOption).getOrElse(
       abort(s"Couldn't find $fullNameOfT constructor.")
     )
