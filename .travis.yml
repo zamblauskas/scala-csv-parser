@@ -6,7 +6,7 @@ jdk:
 script:
   - sbt clean coverage test
 after_success:
-  - sbt codacyCoverage
+  - sbt coverageReport codacyCoverage
 deploy:
   provider: script
   script:
