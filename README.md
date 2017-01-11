@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/zamblauskas/scala-csv-parser.svg?branch=master)](https://travis-ci.org/zamblauskas/scala-csv-parser)
-[![Download](https://api.bintray.com/packages/zamblauskas/maven/scala-csv-parser/images/download.svg) ](https://bintray.com/zamblauskas/maven/scala-csv-parser/_latestVersion)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7a2742cce08742939453f5cf86b1f1a9)](https://www.codacy.com/app/zamblauskas/scala-csv-parser/dashboard)
+[![Bintray Download](https://api.bintray.com/packages/zamblauskas/maven/scala-csv-parser/images/download.svg) ](https://bintray.com/zamblauskas/maven/scala-csv-parser/_latestVersion)
+[![Codacy Grade Badge](https://api.codacy.com/project/badge/Grade/7a2742cce08742939453f5cf86b1f1a9)](https://www.codacy.com/app/zamblauskas/scala-csv-parser/dashboard)
+[![Codacy Coverage Badge](https://api.codacy.com/project/badge/Coverage/7a2742cce08742939453f5cf86b1f1a9)](https://www.codacy.com/app/zamblauskas/scala-csv-parser/dashboard)
 
 About
 ==============================
