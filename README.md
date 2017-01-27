@@ -22,11 +22,9 @@ val csv = """
             |Thomas,25,,
           """.stripMargin
 
-Parser.parse[Person](csv)
-```
+val result = Parser.parse[Person](csv)
 
-```
-res0: Either[zamblauskas.csv.parser.Parser.Failure,Seq[Person]] = Right(List(Person(Emily,33,Some(London)), Person(Thomas,25,None)))
+result shouldBe Right(List(Person("Emily",33,Some("London")), Person("Thomas",25,None)))
 ```
 
 ColumnReads[T]
@@ -38,7 +36,10 @@ You can define one manually if the generated one does not fit your use case
 
 This is identical to what the macro generates for a `Person` case class:
 ``` scala
+import zamblauskas.csv.parser._
 import zamblauskas.functional._
+
+case class Person(name: String, age: Int, city: Option[String])
 
 implicit val personReads: ColumnReads[Person] = (
   column("name").as[String]    and
@@ -77,11 +78,7 @@ val germanCsv =
     |33,London
   """.stripMargin
 
-parse[Person](englishCsv) == parse[Person](germanCsv)
-```
-
-```
-res0: Boolean = true
+parse[Person](englishCsv) shouldBe parse[Person](germanCsv)
 ```
 
 Alternative reads
@@ -120,13 +117,8 @@ val germanCsv =
     |33,London
   """.stripMargin
 
-parse[Person](englishCsv) == parse[Person](germanCsv)
+parse[Person](englishCsv) shouldBe parse[Person](germanCsv)
 ```
-
-```
-res0: Boolean = true
-```
-
 
 SBT dependency
 ==============================
@@ -134,7 +126,7 @@ SBT dependency
 Package is available at [Bintray](https://bintray.com/zamblauskas/maven/scala-csv-parser).
 Check for the latest version and add to your `build.sbt`:
 
-``` scala
+```
 resolvers += Resolver.bintrayRepo("zamblauskas", "maven")
 
 libraryDependencies += "zamblauskas" %% "scala-csv-parser" % "<latest_version>"

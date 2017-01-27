@@ -5,7 +5,7 @@ name := "scala-csv-parser"
 libraryDependencies ++= Seq(
   "net.sf.opencsv" %  "opencsv"       % "2.3",
   "org.scala-lang" %  "scala-reflect" % scalaVersion.value,
-  "org.scalatest"  %% "scalatest"     % "3.0.0"              % "test"
+  "org.scalatest"  %% "scalatest"     % "3.0.0"              % Test
 )
 
 scalacOptions ++= Seq(
