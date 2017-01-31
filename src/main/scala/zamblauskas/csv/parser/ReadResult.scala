@@ -3,7 +3,7 @@ package zamblauskas.csv.parser
 import zamblauskas.functional.{Functor, Semigroup}
 
 
-trait ReadResult[+A]
+sealed trait ReadResult[+A]
 final case class ReadSuccess[A](value: A) extends ReadResult[A]
 final case class ReadFailure(msg: String) extends ReadResult[Nothing]
 
