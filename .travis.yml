@@ -1,16 +1,17 @@
 language: scala
 scala:
-- 2.11.8
+  - 2.11.8
+  - 2.12.1
 jdk:
 - oraclejdk8
 script:
-  - sbt clean coverage test
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test
 after_success:
-  - sbt coverageReport codacyCoverage
+  - sbt ++$TRAVIS_SCALA_VERSION coverageReport codacyCoverage
 deploy:
   provider: script
   script:
-  - /bin/bash "$TRAVIS_BUILD_DIR/.travis.credentials.sh" && sbt publish
+  - /bin/bash "$TRAVIS_BUILD_DIR/.travis.credentials.sh" && sbt ++$TRAVIS_SCALA_VERSION publish
   on:
     tags: true
 env:

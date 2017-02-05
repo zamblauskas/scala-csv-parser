@@ -22,8 +22,6 @@ scalacOptions ++= Seq(
   "-Ywarn-value-discard"
 )
 
-// Implicit conversions are needed for the nice functional syntax
-wartremoverErrors in (Compile, compile) ++= Warts.allBut(Wart.ImplicitConversion)
 // Too much false-positives in the macro code - better just disable it
 wartremoverExcluded += baseDirectory.value / "src/main/scala/zamblauskas/csv/parser/ReadsMacro.scala"
 
