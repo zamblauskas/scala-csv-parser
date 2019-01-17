@@ -46,6 +46,16 @@ implicit val personReads: ColumnReads[Person] = (
   column("age").as[Int]        and
   column("city").asOpt[String]
 )(Person)
+
+val csv = """
+            |name,age,height,city
+            |Emily,33,169,London
+            |Thomas,25,,
+          """.stripMargin
+
+val result = Parser.parse[Person](csv)
+
+result shouldBe Right(List(Person("Emily",33,Some("London")), Person("Thomas",25,None)))
 ```
 
 Alternative column names
