@@ -17,6 +17,8 @@ object Reads {
 
   implicit val intReads: Reads[Int] = tryRead(_.toInt)
 
+  implicit val longReads: Reads[Long] = tryRead(_.toLong)
+
   implicit val floatReads: Reads[Float] = tryRead(_.toFloat)
 
   implicit val doubleReads: Reads[Double] = tryRead(_.toDouble)
