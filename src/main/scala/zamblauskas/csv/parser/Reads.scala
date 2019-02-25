@@ -17,11 +17,15 @@ object Reads {
 
   implicit val intReads: Reads[Int] = tryRead(_.toInt)
 
+  implicit val longReads: Reads[Long] = tryRead(_.toLong)
+
   implicit val floatReads: Reads[Float] = tryRead(_.toFloat)
 
   implicit val doubleReads: Reads[Double] = tryRead(_.toDouble)
 
   implicit val booleanReads: Reads[Boolean] = tryRead(_.toBoolean)
+
+  implicit val bigDecimalReads: Reads[BigDecimal] = tryRead(_.toBigDecimal)
 
   private[this] def tryRead[T : ClassTag](f: String => T): Reads[T] = new Reads[T] {
     def read(column: Column): ReadResult[T] = Try[ReadResult[T]] {
