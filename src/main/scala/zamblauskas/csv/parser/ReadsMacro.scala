@@ -55,12 +55,12 @@ object ReadsMacro {
           """
       case _ =>
         val applicativeBuilder = fieldsColumnBuilders.reduceLeft { (acc, r) =>
-          q"""
-            $functionalPkg
-            $acc.and($r)
-            """
+          q"$acc.and($r)"
         }
-        q"$applicativeBuilder.apply($newTypeOfT)"
+        q"""
+           $functionalPkg
+           $applicativeBuilder.apply($newTypeOfT)
+         """
     }
 
     c.Expr[ColumnReads[T]](columnBuilderOfT)
