@@ -1,12 +1,12 @@
 package zamblauskas
 
-import org.scalatest.{FunSpec, Matchers}
-
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import zamblauskas.csv.parser.Parser._
 import zamblauskas.csv.parser._
 
 
-class ReadsMacroSpec extends FunSpec with Matchers {
+class ReadsMacroSpec extends AnyFunSpec with Matchers {
   it("generate reads for single param case class") {
     case class SingleParam(param: String)
 

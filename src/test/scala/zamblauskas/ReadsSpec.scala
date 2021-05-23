@@ -1,9 +1,10 @@
 package zamblauskas
 
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import zamblauskas.csv.parser._
 
-class ReadsSpec extends FunSpec with Matchers {
+class ReadsSpec extends AnyFunSpec with Matchers {
 
   describe("default Reads") {
     it("read String") {

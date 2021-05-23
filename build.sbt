@@ -1,12 +1,19 @@
-organization := "zamblauskas"
+organization := "io.github.zamblauskas"
 
 name := "scala-csv-parser"
 
 libraryDependencies ++= Seq(
   "net.sf.opencsv" %  "opencsv"       % "2.3",
   "org.scala-lang" %  "scala-reflect" % scalaVersion.value,
-  "org.scalatest"  %% "scalatest"     % "3.0.5"              % Test
+  "org.scalatest"  %% "scalatest"     % "3.2.9"              % Test
 )
+
+val scala211 = "2.11.12"
+val scala212 = "2.12.13"
+val scala213 = "2.13.6"
+
+scalaVersion := scala213
+crossScalaVersions := Seq(scala211, scala212, scala213)
 
 scalacOptions ++= Seq(
   "-feature",
@@ -16,7 +23,6 @@ scalacOptions ++= Seq(
   "-language:higherKinds",
   "-Xfatal-warnings",
   "-Xlint",
-  "-Yno-adapted-args",
   "-Ywarn-dead-code",
   "-Ywarn-numeric-widen",
   "-Ywarn-value-discard"
@@ -28,3 +34,6 @@ wartremoverExcluded += baseDirectory.value / "src/main/scala/zamblauskas/csv/par
 enablePlugins(spray.boilerplate.BoilerplatePlugin)
 
 licenses := ("MIT", url("https://opensource.org/licenses/MIT")) :: Nil
+
+sonatypeCredentialHost := "s01.oss.sonatype.org"
+sonatypeRepository := "https://s01.oss.sonatype.org/service/local"

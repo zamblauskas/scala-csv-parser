@@ -1,0 +1,39 @@
+
+on:
+  push:
+    branches: [master, main]
+    tags: ["*"]
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: coursier/cache-action@v6
+      - uses: laughedelic/coursier-setup@v1
+        with:
+          jvm: adopt:11
+          apps: sbt
+      - run: sbt coverage +test coverageReport
+      - uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: target/scala-2.13/coverage-report/cobertura.xml
+
+  publish:
+    needs: test
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
+      - uses: coursier/cache-action@v6
+      - uses: laughedelic/coursier-setup@v1
+        with:
+          jvm: adopt:11
+          apps: sbtn
+      - run: sbtn ci-release
+        env:
+          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
