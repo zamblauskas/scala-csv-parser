@@ -20,7 +20,7 @@ object Parser {
 
   def isHeaderValidWithSeparator[T](str: String, separator: Char)(implicit cr: ColumnReads[T]): Boolean = {
     val (_, header) = readerAndHeader(str, separator)
-    cr.isHeaderValid(header)
+    cr.isHeaderValid(header.toIndexedSeq)
   }
 
   /**
@@ -33,7 +33,7 @@ object Parser {
 
     def parseLine(line: Array[String]): ReadResult[T] = {
       val columns = header.zip(line).map { case (c, h) => Column(c, h) }
-      cr.read(columns)
+      cr.read(columns.toIndexedSeq)
     }
 
     @tailrec

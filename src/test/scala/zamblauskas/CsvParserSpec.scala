@@ -1,12 +1,13 @@
 package zamblauskas
 
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import zamblauskas.csv.parser.Parser._
 import zamblauskas.csv.parser._
 import zamblauskas.functional._
 
 
-class CsvParserSpec extends FunSpec with Matchers {
+class CsvParserSpec extends AnyFunSpec with Matchers {
 
   case class Person(name: String, age: Int, city: Option[String])
 
