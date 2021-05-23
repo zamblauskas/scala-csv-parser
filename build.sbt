@@ -34,6 +34,15 @@ wartremoverExcluded += baseDirectory.value / "src/main/scala/zamblauskas/csv/par
 enablePlugins(spray.boilerplate.BoilerplatePlugin)
 
 licenses := ("MIT", url("https://opensource.org/licenses/MIT")) :: Nil
+homepage := Some(url("https://github.com/zamblauskas/scala-csv-parser"))
+developers := List(
+  Developer(
+    "contributors",
+    "Contributors",
+    "https://github.com/zamblauskas/scala-csv-parser/graphs/contributors",
+    url("https://github.com/zamblauskas/scala-csv-parser/graphs/contributors")
+  )
+)
 
 sonatypeCredentialHost := "s01.oss.sonatype.org"
 sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
