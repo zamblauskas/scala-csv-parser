@@ -1,7 +1,8 @@
-[![Build Status](https://travis-ci.org/zamblauskas/scala-csv-parser.svg?branch=master)](https://travis-ci.org/zamblauskas/scala-csv-parser)
-[![Bintray Download](https://api.bintray.com/packages/zamblauskas/maven/scala-csv-parser/images/download.svg) ](https://bintray.com/zamblauskas/maven/scala-csv-parser/_latestVersion)
+![Github Action](https://github.com/zamblauskas/scala-csv-parser/actions/workflows/release.yml/badge.svg)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.zamblauskas/scala-csv-parser_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.zamblauskas/scala-csv-parser_2.13)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/359702f057414b42b9df9728c2c18094)](https://www.codacy.com/gh/zamblauskas/scala-csv-parser/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zamblauskas/scala-csv-parser&amp;utm_campaign=Badge_Grade)
-[![Codacy Coverage Badge](https://api.codacy.com/project/badge/Coverage/7a2742cce08742939453f5cf86b1f1a9)](https://www.codacy.com/app/zamblauskas/scala-csv-parser/dashboard)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/359702f057414b42b9df9728c2c18094)](https://www.codacy.com/gh/zamblauskas/scala-csv-parser/dashboard?utm_source=github.com&utm_medium=referral&utm_content=zamblauskas/scala-csv-parser&utm_campaign=Badge_Coverage)
+
 
 About
 ==============================
@@ -94,7 +95,7 @@ parse[Person](englishCsv) shouldBe parse[Person](germanCsv)
 Alternative reads
 ==============================
 
-Example above can be rewritten to use alternative `ColumnReads` instead of alternative column names on single `ColumnReads`.
+Example above can be rewritten to use alternative `ColumnReads` instead of alternative column names.
 
 ``` scala
 import zamblauskas.csv.parser._
@@ -133,11 +134,9 @@ parse[Person](englishCsv) shouldBe parse[Person](germanCsv)
 SBT dependency
 ==============================
 
-Package is available at [Bintray](https://bintray.com/zamblauskas/maven/scala-csv-parser).
-Check for the latest version and add to your `build.sbt`:
+Package is available on [Maven Central](https://mvnrepository.com/artifact/io.github.zamblauskas/scala-csv-parser).
+Check the link for the latest version and add to your `build.sbt`:
 
 ```
-resolvers += Resolver.bintrayRepo("zamblauskas", "maven")
-
-libraryDependencies += "zamblauskas" %% "scala-csv-parser" % "<latest_version>"
+libraryDependencies += "io.github.zamblauskas" %% "scala-csv-parser" % "<latest_version>"
 ```
