@@ -2,7 +2,7 @@ package zamblauskas
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
-import zamblauskas.csv.parser._
+import zamblauskas.csv.parser.ReadResult._
 
 class ReadsSpec extends AnyFunSpec with Matchers {
 

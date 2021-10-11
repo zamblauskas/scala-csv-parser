@@ -1,50 +1,40 @@
 package zamblauskas.functional
 
-trait Applicative[F[_]] extends Functor[F] {
-  def unit[A](a: => A): F[A]
-  def apply[A, B](fab: => F[A => B])(fa: => F[A]): F[B]
+trait Applicative[F[_]] extends Functor[F]:
+  def unit[A](a: A): F[A]
+  extension [A](fa: F[A]) def apply[B](f: F[A => B]): F[B]
 
   // derived methods
-  def map[A, B](fa: => F[A])(f: A => B): F[B] = apply(unit(f))(fa)
+  extension [A](fa: F[A]) def map[B](f: A => B): F[B] = apply(fa)(unit(f))
 
-  def map1[A, B](fa: => F[A])(f: A => B): F[B] = map(fa)(f)
+  extension [A](fa: F[A]) def map1[B](f: A => B): F[B] = map(fa)(f)
 
-  [1..21#def map2[[#P1#], P2, R]([#f1: => F[P1]#], f2: => F[P2])(f: ([#P1#], P2) => R): F[R] =
-    apply(map1([#f1#])(([#p1: P1#]) => f.curried [#(p1)# ]))(f2)  #
-  ]
-}
-
-[2..21#trait ApplicativeBuilder1[M[_], [#P1#]] { self =>
-  [#val p1: M[P1]#
+  [1..21#extension [[#P1#], P2](fa: ([#F[P1]#], F[P2])) def map2[R](f: ([#P1#], P2) => R): F[R] =
+    apply(fa._2)(map1([#fa._1#])(([#p1#]) => f.curried [#(p1)# ]))  #
   ]
 
-  def apply[R](f: ([#P1#]) => R)(implicit ap: Applicative[M]): M[R] = ap.map1([#p1#])(f)
+[2..21#trait ApplicativeBuilder1[F[_], [#P1#]] { self =>
+  [#val p1: F[P1]#
+  ]
 
-  def and[R](r: M[R]): ApplicativeBuilder2[M, [#P1#], R] = new ApplicativeBuilder2[M, [#P1#], R] {
-    [#val p1: M[P1] = self.p1#
+  def apply[R](f: ([#P1#]) => R)(implicit ap: Applicative[F]): F[R] = ap.map1([#p1#])(f)
+
+  def and[R](r: F[R]): ApplicativeBuilder2[F, [#P1#], R] = new ApplicativeBuilder2[F, [#P1#], R]:
+    [#val p1: F[P1] = self.p1#
     ]
-    val p2: M[R] = r
-  }
+    val p2: F[R] = r
 }#
 ]
 
-[22..22#trait ApplicativeBuilder1[M[_], [#P1#]] { self =>
-  [#val p1: M[P1]#
+[22..22#trait ApplicativeBuilder1[F[_], [#P1#]] { self =>
+  [#val p1: F[P1]#
   ]
 
-  def apply[R](f: ([#P1#]) => R)(implicit ap: Applicative[M]): M[R] = ap.map1([#p1#])(f)
+  def apply[R](f: ([#P1#]) => R)(implicit ap: Applicative[F]): F[R] = ap.map1([#p1#])(f)
 }#
 ]
 
-class ApplicativeOps[F[_], A](val self: F[A])(implicit val F: Applicative[F]) {
-  def and[B](fb: F[B]): ApplicativeBuilder2[F, A, B] = new ApplicativeBuilder2[F, A, B] {
-    val p1: F[A] = self
-    val p2: F[B] = fb
-  }
-}
-
-trait ToApplicativeOps {
-  implicit def toApplicativeOps[F[_], A](v: F[A])(implicit F0: Applicative[F]): ApplicativeOps[F, A] = new ApplicativeOps[F, A](v)
-}
-
-object ToApplicativeOps extends ToApplicativeOps
+extension [F[_], P1](fa: F[P1])
+  def and[P2](r: F[P2]): ApplicativeBuilder2[F, P1, P2] = new ApplicativeBuilder2[F, P1, P2]:
+    val p1: F[P1] = fa
+    val p2: F[P2] = r

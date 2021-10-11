@@ -6,4 +6,6 @@ addSbtPlugin("io.spray" % "sbt-boilerplate" % "0.6.1")
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.8.1")
 
-addSbtPlugin("io.github.zamblauskas" % "sbt-examplestest" % "0.2.3")
+addSbtPlugin("io.github.zamblauskas" % "sbt-examplestest" % "0.3.0")
+
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.2")

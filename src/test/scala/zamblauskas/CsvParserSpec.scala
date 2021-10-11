@@ -16,7 +16,7 @@ class CsvParserSpec extends AnyFunSpec with Matchers {
       column("name").as[String] and
       column("age").as[Int] and
       column("city").asOpt[String]
-    )(Person)
+    )(Person.apply)
 
     testReads(personReads)
   }
@@ -36,7 +36,7 @@ class CsvParserSpec extends AnyFunSpec with Matchers {
       //      we need to handle `None` for the first one as invalid value so it would
       //      try to pick second.
       (column("c").as[String].map(Some(_)) or column("city").asOpt[String])
-    )(Person)
+    )(Person.apply)
 
     it("read with short column names") {
       val csv = """
@@ -84,7 +84,7 @@ class CsvParserSpec extends AnyFunSpec with Matchers {
       column("n").as[String] and
       column("a").as[Int] and
       column("c").asOpt[String]
-    )(Person)
+    )(Person.apply)
 
     implicit val personReads = defaultReads or shortNameReads
 

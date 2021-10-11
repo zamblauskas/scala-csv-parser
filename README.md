@@ -46,7 +46,7 @@ implicit val personReads: ColumnReads[Person] = (
   column("name").as[String]    and
   column("age").as[Int]        and
   column("city").asOpt[String]
-)(Person)
+)(Person.apply)
 
 val csv = """
             |name,age,height,city
@@ -75,7 +75,7 @@ case class Person(age: Int, city: String)
 implicit val personReads: ColumnReads[Person] = (
   (column("age").as[Int] or column("alter").as[Int]) and
   (column("city").as[String] or column("stadt").as[String])
-)(Person)
+)(Person.apply)
 
 val englishCsv =
   """
@@ -107,12 +107,12 @@ case class Person(age: Int, city: String)
 val englishPersonReads: ColumnReads[Person] = (
   column("age").as[Int] and
   column("city").as[String]
-)(Person)
+)(Person.apply)
 
 val germanPersonReads: ColumnReads[Person] = (
   column("alter").as[Int] and
   column("stadt").as[String]
-)(Person)
+)(Person.apply)
 
 implicit val personReads = englishPersonReads or germanPersonReads
 
